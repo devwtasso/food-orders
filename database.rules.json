@@ -1,0 +1,21 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": "auth !== null",
+    "products": {
+      ".read": true,
+      ".write": false,
+      "$product_id": {
+        "name": {
+          ".validate": "newData.isString()"
+        },
+        "description": {
+          ".validate": "newData.isString()"
+        },
+        "price": {
+          ".validate": "newData.isString()"
+        }
+      }
+    }
+  }
+}

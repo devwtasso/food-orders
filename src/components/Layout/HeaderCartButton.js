@@ -2,8 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import CartIcon from "./../Cart/CartIcon";
 import CartContext from "../../store/cart-context";
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import { useNavigate } from 'react-router-dom';
 
 const HeaderCartButton = (props) => {
+  const navigate = useNavigate();
+
   const [btnIsHighlighted, setBtnIsHighlighted] = useState(false);
   const cartContext = useContext(CartContext);
 
@@ -38,11 +41,8 @@ const HeaderCartButton = (props) => {
         <button
           className={btnClasses}
           style={{ background: "transparent" }}
-          onClick={() => console.log("cliquei")}
+          onClick={() => navigate('/my-orders')}
         >
-          <span className="w-5 h-5 md:w-[1.35rem] md:h-[1.35rem] mr-2">
-            <ManageSearchIcon />
-          </span>
           <span className="text-sm md:text-base">Meus pedidos</span>
         </button>
 

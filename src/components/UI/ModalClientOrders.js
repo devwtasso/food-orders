@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react"
 
-import { Modal } from "@mui/material";
+import { Button, Modal } from "@mui/material";
 import Box from "@mui/material/Box";
+
+import GoogleIcon from '@mui/icons-material/Google';
 
 const style = {
   position: "absolute",
@@ -12,7 +14,7 @@ const style = {
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 4,
+  p: 10,
   display: "flex",
   justifyContent: "space-between",
 };
@@ -21,10 +23,8 @@ export default function ModalOrders(props) {
   const [openModalClientOrders, setOpenModalClientOrders] = useState(props.open)
 
   useEffect(() => {
-    console.log('entrei')
     if (props.onHideCard) {
       handleCloseModalClientOrders()
-
     }
   }, [props.onHideCard])
 

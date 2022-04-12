@@ -26,11 +26,21 @@ class Firebase {
 
   // AUTH ACTIONS ------------
   createAccount = (email, password) => this.auth.createUserWithEmailAndPassword(email, password);
+  signInWithGoogle = () => this.auth.signInWithPopup(new app.auth.GoogleAuthProvider());
   signIn = (email, password) => this.auth.signInWithEmailAndPassword(email, password);
   signOut = () => this.auth.signOut();
   passwordReset = (email) => this.auth.sendPasswordResetEmail(email);
   addUser = (id, user) => this.db.collection('users').doc(id).set(user);
   getUser = (id) => this.db.collection('users').doc(id).get();
+
+  getRestaurant = (id) => this.db.collection('restaurants').doc(id).get();
+  storeRestaurantImage = async (id, folder, imageFile) => {
+    const snapshot = await this.storage.ref(folder).child(id).put(imageFile);
+    const downloadURL = await snapshot.ref.getDownloadURL();
+
+    return downloadURL;
+  };
+
   passwordUpdate = (password) => this.auth.currentUser.updatePassword(password);
   changePassword = (currentPassword, newPassword) => new Promise((resolve, reject) => {
     this.reauthenticate(currentPassword)
@@ -78,9 +88,9 @@ class Firebase {
   });
   setAuthPersistence = () => this.auth.setPersistence(app.auth.Auth.Persistence.LOCAL);
   addProduct = (id, product) => this.db.collection('products').doc(id).set(product);
-  getProducts = (codigoRestaurante) => this.db
+  getProducts = () => this.db
     .collection('products')
-    .where('restaurantCode', '==', codigoRestaurante)
+    .where('restaurantCode', '==', process.env.REACT_APP_RESTAURANT_ID)
     .get();
   generateKey = () => this.db.collection('products').doc().id;
   storeImage = async (id, folder, imageFile) => {
@@ -95,12 +105,18 @@ class Firebase {
   removeProduct = (id) => this.db.collection('products').doc(id).delete();
 
   addCategory = (id, category) => this.db.collection('categories').doc(id).set(category);
-  getCategories = (codigoRestaurante) => this.db
+  getCategories = () => this.db
     .collection('categories')
-    .where('restaurantCode', '==', codigoRestaurante)
+    .where('restaurantCode', '==', process.env.REACT_APP_RESTAURANT_ID)
     .get();
   editCategory = (id, updates) => this.db.collection('categories').doc(id).update(updates);
   removeCategory = (id) => this.db.collection('categories').doc(id).delete();
+
+  addOrder = (id, order) => this.db.collection('orders').doc(id).set(order);
+  getClientOrders = (clientID, restaurantCode) => this.db
+    .collection('orders')
+    .where('clientID', '==', clientID)
+    .get();
 }
 
 const firebaseInstance = new Firebase();

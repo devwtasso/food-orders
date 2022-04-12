@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
-import Modal from '../UI/Modal';
 import CartItem from './CartItem';
 import CartContext from '../../store/cart-context';
 import Checkout from './Checkout';
@@ -29,6 +28,21 @@ const Cart = props => {
   };
 
   const handleSubmitOrder = async userData => {
+    // const pedido = {
+    //   clientID: clientID,
+    //   data: '11/04/2022 13:58:22',
+    //   itens: [
+    //     { nome: 'X-Tudo', preco: 29.99, quantidade: 2 },
+    //     { nome: 'Coca-Cola Lata', preco: 6.99, quantidade: 1 },
+    //   ],
+    //   totalPedido: 36.98,
+    //   restaurantCode: 'mtL0p2GEjGYHcdqqS0YobObfhhy2'
+    // }
+
+    // const key = firebaseInstance.generateKey();
+
+    // firebaseInstance.addOrder(key, pedido)
+
     setIsSubmitting(true);
     const phone = '5516997238050'
     

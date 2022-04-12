@@ -12,25 +12,56 @@ const AvailableMeals = () => {
   const [meals, setMeals] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState();
+  const [categories, setCategories] = useState([]);
 
   let tabelaTemp = [];
 
-  const handleGetProducts = async (codigoRestaurante) => {
-    const docs = await firebaseInstance.getProducts(codigoRestaurante);
+  useEffect(() => {
+    handleGetCategories()
+  }, [])
+
+  const handleGetProducts = async () => {
+    let tempCategories = []
+    const docsCategories = await firebaseInstance.getCategories();
+
+    docsCategories.forEach((snap) => {
+      const data = snap.data();
+      tempCategories.push(data.category);
+    });
+
+    
+
+    const docs = await firebaseInstance.getProducts();
 
     docs.forEach((snap) => {
       const data = snap.data();
       tabelaTemp.push({...data, id: snap.id});
     });
+
+    tempCategories.forEach((category) => {
+      tabelaTemp.filter(produto => produto.category === category)  
+    })
+
     return tabelaTemp;
+  };
+
+  const handleGetCategories = async () => {
+    let tempCategories = []
+    const docs = await firebaseInstance.getCategories();
+
+    docs.forEach((snap) => {
+      const data = snap.data();
+      tempCategories.push(data.category);
+    });
+
+    console.log({ tempCategories })
+    setCategories(tempCategories)
   };
 
 
   useEffect(() => {
-    const id = localStorage.getItem("usuarioID");
-
     const fetchMeals = async () => {
-      const loadedMeals = await handleGetProducts(id);
+      const loadedMeals = await handleGetProducts();
       
       setMeals(loadedMeals);
       setIsLoading(false);

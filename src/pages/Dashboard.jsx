@@ -92,7 +92,7 @@ export default function Dashboard() {
       description: "",
       category: "",
       image: "",
-      restaurantCode: localStorage.getItem("usuarioID"),
+      restaurantCode: process.env.REACT_APP_RESTAURANT_ID,
     });
   }, []);
 
